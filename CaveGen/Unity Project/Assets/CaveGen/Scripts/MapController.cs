@@ -9,6 +9,9 @@ public class MapController : MonoBehaviour
     public GameObject playerPrefab;
     public int numPlayersToSpawn = 4;
 
+    public GameObject treePrefab;
+
+    public int treeSparseness = 1;
 
     [Header("Debug")]
     public bool showDebugCubes = false;
@@ -28,6 +31,7 @@ public class MapController : MonoBehaviour
         this.activeGreenCubes = new List<List<MapGenerator.Coord>>();
         this.mapGenerator.GenerateMap();
         this.CreateCubes();
+        this.SpawnTrees();
         this.SpawnPlayers();
     }
 
@@ -54,7 +58,7 @@ public class MapController : MonoBehaviour
         }
 
         // Spawn random stuff
-        if (Input.GetKeyDown(KeyCode.S)) {
+        if (Input.GetKeyDown(KeyCode.T)) {
             int numCount = 5;
             int radius = 1;
             List<MapGenerator.Coord> loc = mapGenerator.GetRandomOpenCoords(numCount, radius, true);
@@ -78,7 +82,7 @@ public class MapController : MonoBehaviour
         }
 
         // Remove a patch of random stuff
-        if (Input.GetKeyDown(KeyCode.D) && this.activeGreenCubes.Count > 0) {
+        if (Input.GetKeyDown(KeyCode.Y) && this.activeGreenCubes.Count > 0) {
             List<MapGenerator.Coord> selectedCube = this.activeGreenCubes[0];
             this.activeGreenCubes.RemoveAt(0);
             foreach(MapGenerator.Coord coord in selectedCube) {
@@ -105,6 +109,21 @@ public class MapController : MonoBehaviour
         }
     }
 
+    private void SpawnTrees() {
+        MapTileType[,] map = this.mapGenerator.GetMap();
+        for (int x = 0; x < this.mapGenerator.width; x+= treeSparseness) {
+            for (int y = 0; y < this.mapGenerator.height; y += treeSparseness) {
+                if (map[x,y] == MapTileType.WALL) {
+                    MapGenerator.Coord coord = new MapGenerator.Coord(x, y);
+                    Vector3 spawnLocation = this.mapGenerator.CoordToWorldPoint(coord);
+                    GameObject tree = Instantiate(treePrefab, spawnLocation, Quaternion.identity) as GameObject;
+                    tree.transform.localScale = new Vector3(Random.Range(0.5f, 2f), Random.Range(0.5f, 2f), 1);
+                    tree.transform.SetParent(this.cubeParent);
+                }
+            }
+        }
+    }
+
     private void SpawnPlayers() {
         List<MapGenerator.Coord> playerLocations = mapGenerator.GetRandomOpenCoords(this.numPlayersToSpawn, 1, false);
         foreach (MapGenerator.Coord coord in playerLocations) {
@@ -112,5 +131,7 @@ public class MapController : MonoBehaviour
             GameObject player = Instantiate(playerPrefab, spawnLocation, Quaternion.identity) as GameObject;
         }
     }
+
+
 
 }

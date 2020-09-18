@@ -11,6 +11,8 @@ public class MeshGenerator : MonoBehaviour {
 	public bool is2D;
     public float wallHeight = 5f;
 
+    public bool showMeshes = true;
+
 	List<Vector3> vertices;
 	List<int> triangles;
 
@@ -38,7 +40,9 @@ public class MeshGenerator : MonoBehaviour {
 		}
 
 		Mesh mesh = new Mesh();
-		cave.mesh = mesh;
+		if (this.showMeshes) {
+            cave.mesh = mesh;
+        }
 
 		mesh.vertices = vertices.ToArray();
 		mesh.triangles = triangles.ToArray();
@@ -91,7 +95,10 @@ public class MeshGenerator : MonoBehaviour {
 		}
 		wallMesh.vertices = wallVertices.ToArray ();
 		wallMesh.triangles = wallTriangles.ToArray ();
-		walls.mesh = wallMesh;
+
+        if (this.showMeshes) {
+		    walls.mesh = wallMesh;
+        }
 
 		MeshCollider wallCollider = gameObject.AddComponent<MeshCollider> ();
 		wallCollider.sharedMesh = wallMesh;
