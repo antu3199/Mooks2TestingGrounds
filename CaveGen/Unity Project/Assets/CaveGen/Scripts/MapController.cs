@@ -19,9 +19,13 @@ public class MapController : MonoBehaviour
 
     public MinimapController minimap;
 
+
     [Header("Debug")]
+    public float cameraDistance = 10f;
+
     public bool showDebugCubes = false;
     public Transform cubeParent;
+
 
     private GameObject[,] debugCubes;
 
@@ -145,12 +149,25 @@ public class MapController : MonoBehaviour
             Vector3 spawnLocation = mapGenerator.CoordToWorldPoint(coord);
             GameObject player = Instantiate(playerPrefab, spawnLocation, Quaternion.identity) as GameObject;
             if (index == 0) {
-                this.mainPlayer = player;
+                this.SetMainPlayer(player);
+            } else {
+                player.GetComponent<ShowOnlyIfInRange>().Initialize(this.mainPlayer.transform);
+                player.gameObject.name += " " + index;
             }
             index++;
         }
     }
 
+    private void SetMainPlayer(GameObject player) {
+        this.mainPlayer = player;
+        this.mainPlayer.name = "Main player";
+        Vector3 playerPos = this.mainPlayer.transform.position;
+        Camera.main.transform.position = new Vector3(playerPos.x, playerPos.y + this.cameraDistance, playerPos.z - this.cameraDistance);
+        Camera.main.transform.LookAt(playerPos);
+        Camera.main.GetComponent<FogOfWarScript>().m_player = player.transform;
+        Camera.main.transform.SetParent(player.transform);
+
+    }
 
 
 }
