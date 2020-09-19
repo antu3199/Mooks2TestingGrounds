@@ -31,7 +31,7 @@ public class LookAtCamera : MonoBehaviour
     }
 
     void LookAtTarget() {
-        if (!rend.isVisible) return;
+        //if (!rend.isVisible) return;
 
         if (lookOpposite) {
             transform.LookAt(2 * transform.position - camera.transform.position);

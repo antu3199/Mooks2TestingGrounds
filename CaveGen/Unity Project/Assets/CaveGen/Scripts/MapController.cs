@@ -13,6 +13,10 @@ public class MapController : MonoBehaviour
 
     public int treeSparseness = 1;
 
+    public bool testMouse = true;
+
+    public Transform treeParent;
+
     [Header("Debug")]
     public bool showDebugCubes = false;
     public Transform cubeParent;
@@ -38,7 +42,7 @@ public class MapController : MonoBehaviour
     // Update is called once per frame
 	void Update() {
         // Test World to map coord
-		if (Input.GetMouseButton(0)) {
+		if (Input.GetMouseButton(0) && testMouse) {
             RaycastHit hitInfo;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hitInfo)) {
@@ -111,14 +115,19 @@ public class MapController : MonoBehaviour
 
     private void SpawnTrees() {
         MapTileType[,] map = this.mapGenerator.GetMap();
-        for (int x = 0; x < this.mapGenerator.width; x+= treeSparseness) {
-            for (int y = 0; y < this.mapGenerator.height; y += treeSparseness) {
+        for (int x = 0; x < this.mapGenerator.width; x++) {
+            for (int y = 0; y < this.mapGenerator.height; y ++) {
                 if (map[x,y] == MapTileType.WALL) {
-                    MapGenerator.Coord coord = new MapGenerator.Coord(x, y);
-                    Vector3 spawnLocation = this.mapGenerator.CoordToWorldPoint(coord);
-                    GameObject tree = Instantiate(treePrefab, spawnLocation, Quaternion.identity) as GameObject;
-                    tree.transform.localScale = new Vector3(Random.Range(0.5f, 2f), Random.Range(0.5f, 2f), 1);
-                    tree.transform.SetParent(this.cubeParent);
+
+                    if ((x % this.treeSparseness == 0 && y % this.treeSparseness == 0) || (x == 0 || y == 0 || x == this.mapGenerator.width-1 || y == this.mapGenerator.height-1)) {
+                        MapGenerator.Coord coord = new MapGenerator.Coord(x, y);
+                        Vector3 spawnLocation = this.mapGenerator.CoordToWorldPoint(coord);
+                        GameObject tree = Instantiate(treePrefab, spawnLocation, Quaternion.identity) as GameObject;
+                        float randScale = Random.Range(0.5f, 2f);
+                        tree.transform.localScale = new Vector3(randScale, randScale, 1);
+                        tree.transform.SetParent(this.treeParent);
+                    }
+
                 }
             }
         }
