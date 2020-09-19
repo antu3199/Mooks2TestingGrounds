@@ -19,6 +19,8 @@ public class MapController : MonoBehaviour
 
     public MinimapController minimap;
 
+    public FogOfWarScript fogOfWarScript;
+
 
     [Header("Debug")]
     public float cameraDistance = 10f;
@@ -164,9 +166,10 @@ public class MapController : MonoBehaviour
         Vector3 playerPos = this.mainPlayer.transform.position;
         Camera.main.transform.position = new Vector3(playerPos.x, playerPos.y + this.cameraDistance, playerPos.z - this.cameraDistance);
         Camera.main.transform.LookAt(playerPos);
-        Camera.main.GetComponent<FogOfWarScript>().m_player = player.transform;
+        fogOfWarScript.m_player = player.transform;
+        fogOfWarScript.transform.SetParent(player.transform);
         Camera.main.transform.SetParent(player.transform);
-
+        fogOfWarScript.gameObject.transform.position = new Vector3(player.transform.position.x , player.transform.position.y + 100, player.transform.position.z);
     }
 
 

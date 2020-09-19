@@ -11,9 +11,12 @@ public class MinimapController : MonoBehaviour
 
     public float forwardOffset = 1f;
 
+
     private MapGenerator mapGenerator;
 
     private GameObject mainPlayer;
+
+    
 
     public void Initialize(MapGenerator mapGenerator, GameObject mainPlayer) {
         this.mapGenerator = mapGenerator;

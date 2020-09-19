@@ -12,7 +12,7 @@ public class FogOfWarScript : MonoBehaviour {
     public float unseenAlpha = 0.8f;
 	private float m_radiusSqr { get { return m_radius*m_radius; }}
 	
-	private Mesh m_mesh;
+	public Mesh m_mesh{get; set;}
 	private Vector3[] m_vertices;
 	private Color[] m_colors;
 	
@@ -26,6 +26,10 @@ public class FogOfWarScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (m_player == null) {
+            return;
+        }
+
 		Ray r = new Ray(transform.position, m_player.position - transform.position);
 		RaycastHit hit;
 
