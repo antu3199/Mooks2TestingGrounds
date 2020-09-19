@@ -96,4 +96,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camera: {fileID: 0}
   doOnUpdate: 1
-  lookOpposite: 1
+  lookOpposite: 0
+  maxSquaredDistance: 1000

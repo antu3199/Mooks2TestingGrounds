@@ -98,7 +98,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camera: {fileID: 0}
   doOnUpdate: 1
-  lookOpposite: 1
+  lookOpposite: 0
+  maxSquaredDistance: 1000
 --- !u!1 &639585651060546923
 GameObject:
   m_ObjectHideFlags: 0
@@ -196,7 +197,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   camera: {fileID: 0}
   doOnUpdate: 1
-  lookOpposite: 1
+  lookOpposite: 0
+  maxSquaredDistance: 1000
 --- !u!114 &7682903018060043144
 MonoBehaviour:
   m_ObjectHideFlags: 0

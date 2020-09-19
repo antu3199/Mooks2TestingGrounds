@@ -13,8 +13,8 @@ public class MeshGenerator : MonoBehaviour {
 
     public bool showMeshes = true;
 
-	List<Vector3> vertices;
-	List<int> triangles;
+	public List<Vector3> vertices {get; set;}
+	public List<int> triangles {get; set;}
 
 	Dictionary<int,List<Triangle>> triangleDictionary = new Dictionary<int, List<Triangle>> ();
 	List<List<int>> outlines = new List<List<int>> ();
@@ -43,6 +43,7 @@ public class MeshGenerator : MonoBehaviour {
 		if (this.showMeshes) {
             cave.mesh = mesh;
         }
+
 
 		mesh.vertices = vertices.ToArray();
 		mesh.triangles = triangles.ToArray();

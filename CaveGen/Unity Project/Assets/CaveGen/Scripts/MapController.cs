@@ -17,6 +17,8 @@ public class MapController : MonoBehaviour
 
     public Transform treeParent;
 
+    public MinimapController minimap;
+
     [Header("Debug")]
     public bool showDebugCubes = false;
     public Transform cubeParent;
@@ -25,6 +27,7 @@ public class MapController : MonoBehaviour
 
     private List<List<MapGenerator.Coord>> activeGreenCubes;
 
+    private GameObject mainPlayer;
 
     void Start() {
         this.Initialize();
@@ -37,6 +40,7 @@ public class MapController : MonoBehaviour
         this.CreateCubes();
         this.SpawnTrees();
         this.SpawnPlayers();
+        this.minimap.Initialize(this.mapGenerator, this.mainPlayer);
     }
 
     // Update is called once per frame
@@ -135,9 +139,15 @@ public class MapController : MonoBehaviour
 
     private void SpawnPlayers() {
         List<MapGenerator.Coord> playerLocations = mapGenerator.GetRandomOpenCoords(this.numPlayersToSpawn, 1, false);
+        int index = 0;
+
         foreach (MapGenerator.Coord coord in playerLocations) {
             Vector3 spawnLocation = mapGenerator.CoordToWorldPoint(coord);
             GameObject player = Instantiate(playerPrefab, spawnLocation, Quaternion.identity) as GameObject;
+            if (index == 0) {
+                this.mainPlayer = player;
+            }
+            index++;
         }
     }
 
