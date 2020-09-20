@@ -16,7 +16,6 @@ public class ShowOnlyIfInRange : MonoBehaviour
 
     private bool isInvisible = false;
 
-    
 
     public void Initialize(Transform target) {
         this.target = target;

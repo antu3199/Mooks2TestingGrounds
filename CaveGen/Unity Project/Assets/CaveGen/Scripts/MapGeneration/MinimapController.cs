@@ -30,10 +30,6 @@ public class MinimapController : MonoBehaviour
 		mesh.vertices = this.mapGenerator.meshGenerator.vertices.ToArray();
 		mesh.triangles = this.mapGenerator.meshGenerator.triangles.ToArray();
 		mesh.RecalculateNormals();
-
-        //MapGenerator.Coord worldSpaceCoord = this.mapGenerator.NearestWorldPointToCoord(mainPlayer.transform.position);
-        //Vector3 worldSpacePos = this.mapGenerator.CoordToWorldPoint(worldSpaceCoord);
-
     }
 
 

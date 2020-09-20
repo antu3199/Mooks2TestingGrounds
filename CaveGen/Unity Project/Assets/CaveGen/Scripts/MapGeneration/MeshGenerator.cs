@@ -16,10 +16,9 @@ public class MeshGenerator : MonoBehaviour {
 	public List<Vector3> vertices {get; set;}
 	public List<int> triangles {get; set;}
 
-	Dictionary<int,List<Triangle>> triangleDictionary = new Dictionary<int, List<Triangle>> ();
-	List<List<int>> outlines = new List<List<int>> ();
-	HashSet<int> checkedVertices = new HashSet<int>();
-
+	private Dictionary<int,List<Triangle>> triangleDictionary = new Dictionary<int, List<Triangle>> ();
+	private List<List<int>> outlines = new List<List<int>> ();
+	private HashSet<int> checkedVertices = new HashSet<int>();
 
     // Generate meshes using magic
 	public void GenerateMesh(MapTileType[,] map, float squareSize) {

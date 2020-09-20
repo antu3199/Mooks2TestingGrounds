@@ -1,5 +1,7 @@
 ﻿    using UnityEngine;
     using System.Collections;
+
+    // TMP SCRIPT FOR TESTING PURPOSES ONLY
      
     public class FlyCamera : MonoBehaviour {
      

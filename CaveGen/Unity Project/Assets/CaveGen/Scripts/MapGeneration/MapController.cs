@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Controller for MapGenerator
+// A few things here can be seperated into their own scripts later
 public class MapController : MonoBehaviour
 {
     public MapGenerator mapGenerator;
@@ -19,7 +21,7 @@ public class MapController : MonoBehaviour
 
     public MinimapController minimap;
 
-    public FogOfWarScript fogOfWarScript;
+    public FogOfWarGenerator fogOfWar;
 
 
     [Header("Debug")]
@@ -66,7 +68,7 @@ public class MapController : MonoBehaviour
             }
 		}
 
-        // Restart
+        // Restart 
         if (Input.GetKeyDown(KeyCode.R)) {
             this.Initialize();
         }
@@ -166,11 +168,9 @@ public class MapController : MonoBehaviour
         Vector3 playerPos = this.mainPlayer.transform.position;
         Camera.main.transform.position = new Vector3(playerPos.x, playerPos.y + this.cameraDistance, playerPos.z - this.cameraDistance);
         Camera.main.transform.LookAt(playerPos);
-        fogOfWarScript.m_player = player.transform;
-        fogOfWarScript.transform.SetParent(player.transform);
         Camera.main.transform.SetParent(player.transform);
-        fogOfWarScript.gameObject.transform.position = new Vector3(player.transform.position.x , player.transform.position.y + 100, player.transform.position.z);
+        fogOfWar.player = player.transform;
+        fogOfWar.transform.SetParent(player.transform);
+        fogOfWar.gameObject.transform.position = new Vector3(player.transform.position.x , player.transform.position.y + 100, player.transform.position.z);
     }
-
-
 }

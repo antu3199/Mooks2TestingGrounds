@@ -2,18 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FogOfWarScript : MonoBehaviour {
+// Simple fog of war implementation from https://www.youtube.com/watch?v=iGAdaZ1ICaI
+
+public class FogOfWarGenerator : MonoBehaviour {
 	
-	public GameObject m_fogOfWarPlane;
-	public Transform m_player;
-	public LayerMask m_fogLayer;
-	public float m_radius = 5f;
+	public GameObject fogOfWarPlane;
+	public Transform player;
+	public LayerMask fogLayer;
+	public float radius = 5f;
 
     public float unseenAlpha = 0.8f;
 
     public float maxDistance = 100;
 
-	private float m_radiusSqr { get { return m_radius*m_radius; }}
+	private float m_radiusSqr { get { return radius*radius; }}
 	
 	public Mesh m_mesh{get; set;}
 	private Vector3[] m_vertices;
@@ -29,35 +31,22 @@ public class FogOfWarScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (m_player == null) {
+        if (player == null) {
             return;
         }
 
-		Ray r = new Ray(transform.position, m_player.position - transform.position);
+		Ray r = new Ray(transform.position, player.position - transform.position);
 		RaycastHit hit;
 
-        Debug.DrawLine(transform.position, m_player.position, Color.red);
-		if (Physics.Raycast(r, out hit, 1000, m_fogLayer, QueryTriggerInteraction.Collide)) {
+        Debug.DrawLine(transform.position, player.position, Color.red);
+		if (Physics.Raycast(r, out hit, 1000, fogLayer, QueryTriggerInteraction.Collide)) {
 			for (int i=0; i< m_vertices.Length; i++) {
 
-				Vector3 v = m_fogOfWarPlane.transform.TransformPoint(m_vertices[i]);
-                /*
-
-                Vector3 v2 = new Vector3(v.x, v.y, m_fogOfWarPlane.transform.position.z + m_fogOfWarPlane.transform.localScale.z);
-                float outOfRangeDist = Vector3.SqrMagnitude(v2 - v);
-                float outOfRangeDistSquared = (maxDistance * maxDistance);
-                if (outOfRangeDist >= outOfRangeDistSquared) {
-                    float outOfRangeAtten = (outOfRangeDist / outOfRangeDistSquared);
-                    m_colors[i].a = outOfRangeAtten;
-                    continue;
-                }
-                */
+				Vector3 v = fogOfWarPlane.transform.TransformPoint(m_vertices[i]);
 
 				float dist = Vector3.SqrMagnitude(v - hit.point);
 				if (dist < m_radiusSqr) {
                     float attenuation = dist / m_radiusSqr;
-                    
-
                     
 					//float alpha = Mathf.Min(m_colors[i].a, dist/m_radiusSqr);
                     float alpha;
@@ -66,6 +55,8 @@ public class FogOfWarScript : MonoBehaviour {
                     } else {
                         alpha = attenuation * attenuation;
                     }
+
+                    alpha = Mathf.Min(unseenAlpha, alpha);
                      
                     //alpha = 0;
 					m_colors[i].a = alpha;
@@ -80,11 +71,9 @@ public class FogOfWarScript : MonoBehaviour {
 		}
 	}
 
-
-
 	
 	void Initialize() {
-		m_mesh = m_fogOfWarPlane.GetComponent<MeshFilter>().mesh;
+		m_mesh = fogOfWarPlane.GetComponent<MeshFilter>().mesh;
 		m_vertices = m_mesh.vertices;
 		m_colors = new Color[m_vertices.Length];
 		for (int i=0; i < m_colors.Length; i++) {

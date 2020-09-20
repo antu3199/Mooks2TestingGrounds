@@ -40,7 +40,6 @@ public class LookAtCamera : MonoBehaviour
         float deltaX = this.transform.position.x - this.camera.transform.position.x;
         float deltaY = this.transform.position.y - this.camera.transform.position.y;
         float squaredDistance = deltaX * deltaX + deltaY * deltaY;
-        //Debug.Log(squaredDistance);
 
         if ( squaredDistance >= maxSquaredDistance ) {
             return;
@@ -52,17 +51,8 @@ public class LookAtCamera : MonoBehaviour
             //transform.LookAt(2 * transform.position - camera.transform.position);
             transform.forward = -camera.transform.forward;
         } else {
-            transform.forward = camera.transform.forward;
             //transform.LookAt(camera.transform);
+            transform.forward = camera.transform.forward;
         }
     }
-
-    // If it gets too inefficient try using this...
-    private bool IsVisible(GameObject Object, Bounds bounds) {
-          Plane[] planes = GeometryUtility.CalculateFrustumPlanes(this.camera);
-          if (GeometryUtility.TestPlanesAABB(planes , bounds))
-              return true;
-          else
-              return false;
-     }
 }
