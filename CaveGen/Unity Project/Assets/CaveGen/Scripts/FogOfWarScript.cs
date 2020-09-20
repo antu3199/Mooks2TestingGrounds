@@ -10,6 +10,9 @@ public class FogOfWarScript : MonoBehaviour {
 	public float m_radius = 5f;
 
     public float unseenAlpha = 0.8f;
+
+    public float maxDistance = 100;
+
 	private float m_radiusSqr { get { return m_radius*m_radius; }}
 	
 	public Mesh m_mesh{get; set;}
@@ -38,6 +41,18 @@ public class FogOfWarScript : MonoBehaviour {
 			for (int i=0; i< m_vertices.Length; i++) {
 
 				Vector3 v = m_fogOfWarPlane.transform.TransformPoint(m_vertices[i]);
+                /*
+
+                Vector3 v2 = new Vector3(v.x, v.y, m_fogOfWarPlane.transform.position.z + m_fogOfWarPlane.transform.localScale.z);
+                float outOfRangeDist = Vector3.SqrMagnitude(v2 - v);
+                float outOfRangeDistSquared = (maxDistance * maxDistance);
+                if (outOfRangeDist >= outOfRangeDistSquared) {
+                    float outOfRangeAtten = (outOfRangeDist / outOfRangeDistSquared);
+                    m_colors[i].a = outOfRangeAtten;
+                    continue;
+                }
+                */
+
 				float dist = Vector3.SqrMagnitude(v - hit.point);
 				if (dist < m_radiusSqr) {
                     float attenuation = dist / m_radiusSqr;
@@ -64,6 +79,9 @@ public class FogOfWarScript : MonoBehaviour {
 			UpdateColor();
 		}
 	}
+
+
+
 	
 	void Initialize() {
 		m_mesh = m_fogOfWarPlane.GetComponent<MeshFilter>().mesh;
